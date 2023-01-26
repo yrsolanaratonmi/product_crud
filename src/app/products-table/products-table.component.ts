@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Component } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { AuthService } from '../auth.service';
 import { Product } from '../product.interface';
 import { ProductsService } from '../products.service';
 
@@ -25,6 +26,7 @@ export class ProductsTableComponent {
     private productsService: ProductsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private authService: AuthService,
   ) {
     this.productsService.getProducts().subscribe((res) => (this.products = res));
   }
@@ -101,6 +103,9 @@ export class ProductsTableComponent {
     this.submitted = true;
 
     if (this.product.title.trim()) {
+      this.productsService.addProduct(this.product).subscribe((res) => {
+        console.log(res);
+      });
       if (this.product.id) {
         this.products[this.findIndexById(this.product.id)] = this.product;
         this.messageService.add({
@@ -153,5 +158,9 @@ export class ProductsTableComponent {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return id;
+  }
+
+  public logOut() {
+    this.authService.logout();
   }
 }

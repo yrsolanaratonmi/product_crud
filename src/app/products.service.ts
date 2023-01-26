@@ -12,4 +12,8 @@ export class ProductsService {
   public getProducts(): Observable<Array<Product>> {
     return this.http.get<Array<Product>>('https://fakestoreapi.com/products');
   }
+
+  public addProduct(product: Product) {
+    return this.http.post<Product>('https://fakestoreapi.com/products', product);
+  }
 }
